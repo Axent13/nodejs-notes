@@ -32,6 +32,20 @@ async function removeNote(id) {
   console.log(chalk.bgGray("Note was removed!"));
 }
 
+async function editNote(id, newText) {
+  const notes = await getNotes();
+
+  const updatedNotes = notes.map((note) => {
+    if (note.id === id) {
+      return { ...note, title: newText };
+    }
+    return note;
+  });
+
+  await fs.writeFile(notesPath, JSON.stringify(updatedNotes));
+  console.log(chalk.bgGray("Note was edit!"));
+}
+
 async function printNotes() {
   const notes = await getNotes();
   console.log(chalk.bgBlue("Here is the list of notes:"));
@@ -44,4 +58,5 @@ module.exports = {
   addNote,
   getNotes,
   removeNote,
+  editNote,
 };
